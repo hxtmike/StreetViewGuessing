@@ -1,0 +1,22 @@
+html {
+  height: 100vh;
+}
+
+nav {
+    height: 50px;
+}
+
+footer {
+    height: 45px;
+}
+
+.footerp {
+    margin-bottom: 0;
+    font-size: small;
+}
+
+main,
+body,
+#row {
+    height: calc(100vh - 50px - 45px);
+}
