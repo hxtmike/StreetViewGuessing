@@ -1,6 +1,5 @@
 
 function initialize() {
-  const location = { lat: latval, lng: lngval };
 //   const map = new google.maps.Map(document.getElementById("map"), {
 //     center: location,
 //   });
@@ -9,7 +8,7 @@ function initialize() {
   const panorama = new google.maps.StreetViewPanorama(
     document.getElementById("pano"),
     {
-      position: location,
+      pano: panoID,
       addressControl: false,
       panControl: false,
       showRoadLabels: false,

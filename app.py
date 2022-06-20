@@ -10,11 +10,17 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 if not os.environ.get("Google_API_KEY"):
     raise RuntimeError("Google_API_KEY not set")
 
+# open state data json in static file
+with open('./static/states.json', 'r') as stateDataFile:
+    stateDataStr = stateDataFile.read()
+
+# print(stateDataStr)
+
 gglapikey = os.environ.get("Google_API_KEY")
 
 @app.route("/")
 def index():
-    # latval = 42.345573
-    # lngval = -71.098326
-    pana
-    return render_template("index.html", latval=latval, lngval=lngval, gglapikey=gglapikey)
+    # test panoID in Tibet
+    pano='CAoSLEFGMVFpcE0wR2NoekR0YlhCTVRxTFhZbUlCQXN6Z0NvSjhWcFZRalRLRmlV'
+
+    return render_template("index.html", pano=pano, gglapikey=gglapikey)

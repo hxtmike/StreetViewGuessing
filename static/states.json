@@ -475,6 +475,11 @@
    "continent": "Europe"
  },
  {
+   "iso": "UK",
+   "state": "United Kingdom",
+   "continent": "Europe"
+ },
+ {
    "iso": "BM",
    "state": "Bermuda",
    "continent": "North America"
