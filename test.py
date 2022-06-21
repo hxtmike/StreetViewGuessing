@@ -1,5 +1,6 @@
-from svProjectFunctions import getRandomLocationInAvailableStates, getVaildGoogleStreetViewPano, getHemiForCoordinate, getIsoCodeForCoordinate
+from svProjectFunctions import getRandomLocationInAvailableStates, getVaildGoogleStreetViewPano, getHemiForCoordinate, getIsoCodeForCoordinate, getStateForIsoCode, getContinentForIsoCode, getSubdivisionForCoordinate
 
+# check the invalid state code option
 test = getRandomLocationInAvailableStates()
 
 print(test['stateCode'])
@@ -19,4 +20,16 @@ hemi = getHemiForCoordinate(rsps['location']['lat'], rsps['location']['lng'])
 print(hemi)
 
 isoCode = getIsoCodeForCoordinate(rsps['location']['lat'], rsps['location']['lng'])
+# the UK GB problem
+# isoCode = getIsoCodeForCoordinate(51,0)
 print(isoCode)
+
+state = getStateForIsoCode(isoCode)
+print(state)
+
+continent = getContinentForIsoCode(isoCode)
+print(continent)
+
+division = getSubdivisionForCoordinate(rsps['location']['lat'], rsps['location']['lng'])
+print(division['divisionCode'])
+print(division['divisionName'])
