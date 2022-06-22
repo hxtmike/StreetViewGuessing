@@ -185,11 +185,6 @@
    "continent": "Asia"
  },
  {
-   "iso": "PS",
-   "state": "Palestine",
-   "continent": "Asia"
- },
- {
    "iso": "PH",
    "state": "Philippines",
    "continent": "Asia"
@@ -238,11 +233,6 @@
    "iso": "VN",
    "state": "Vietnam",
    "continent": "Asia"
- },
- {
-   "iso": "AX",
-   "state": "Aland",
-   "continent": "Europe"
  },
  {
    "iso": "AL",
@@ -340,18 +330,8 @@
    "continent": "Europe"
  },
  {
-   "iso": "IM",
-   "state": "Isle of Man",
-   "continent": "Europe"
- },
- {
    "iso": "IT",
    "state": "Italy",
-   "continent": "Europe"
- },
- {
-   "iso": "JE",
-   "state": "Jersey",
    "continent": "Europe"
  },
  {
@@ -382,11 +362,6 @@
  {
    "iso": "MC",
    "state": "Monaco",
-   "continent": "Europe"
- },
- {
-   "iso": "ME",
-   "state": "Montenegro",
    "continent": "Europe"
  },
  {
@@ -427,11 +402,6 @@
  {
    "iso": "SM",
    "state": "San Marino",
-   "continent": "Europe"
- },
- {
-   "iso": "RS",
-   "state": "Serbia",
    "continent": "Europe"
  },
  {
@@ -492,11 +462,6 @@
  {
    "iso": "CR",
    "state": "Costa Rica",
-   "continent": "North America"
- },
- {
-   "iso": "CW",
-   "state": "Curacao",
    "continent": "North America"
  },
  {
@@ -562,11 +527,6 @@
  {
    "iso": "PN",
    "state": "Pitcairn Islands",
-   "continent": "Oceania"
- },
- {
-   "iso": "UM",
-   "state": "United States Minor Outlying Islands",
    "continent": "Oceania"
  },
  {

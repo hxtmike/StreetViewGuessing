@@ -6,6 +6,8 @@ test = getRandomLocationInAvailableStates()
 print(test['stateCode'])
 print(test['lat'])
 print(test['lon'])
+print()
+
 
 
 # test a remote location in Tibet
@@ -14,6 +16,7 @@ rsps = getVaildGoogleStreetViewPano(test['lat'], test['lon'])
 print(rsps['location']['lat'])
 print(rsps['location']['lng'])
 print(rsps['pano_id'])
+print()
 # print(type(rsps))
 
 hemi = getHemiForCoordinate(rsps['location']['lat'], rsps['location']['lng'])

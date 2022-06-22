@@ -17,7 +17,7 @@ with open('./static/states.json', 'r') as statesDataFile:
     statesDataStr = statesDataFile.read()
 statesDataJson = json.loads(statesDataStr)
 
-# make a list of only available state iso codes
+# make a list of only available state iso code
 # set up a dict of "iso: {state:stateName, continent:continentName}
 statesIsoList = []
 statesIsoDict = {}
@@ -31,25 +31,36 @@ for state in statesDataJson:
     if not state['continent'] in continentsStatesDict:
         continentsStatesDict[state['continent']] = []
     
-    # deal with UK/GB issue
+    # deal with UK/GB issue, delete item 'UK'
     if state['iso'] == 'UK':
         continue
 
-    continentsStatesDict[state['continent']].append({'iso': state['iso'], 'state': state['state']})
+    continentsStatesDict[state['continent']].append(state['iso'])
 
 # print(statesIsoList)    
 # print(statesIsoDict)
 
 for con in continentsStatesDict:
     print(con)
-    for stat in continentsStatesDict[con]:
-        print(stat)
+    print(continentsStatesDict[con])
 
 
 # load the subdivision database
 with open('./static/iso-3166-2.json', 'r') as divisionsDataFile:
     divisionsDataStr = divisionsDataFile.read()
 divisionDataJson = json.loads(divisionsDataStr)
+# the dict which is covering 237 states is too large, cut it
+divisionSelectedDict = {}
+
+for iso in statesIsoList:
+    # print(iso)
+    # print(divisionDataJson[iso])
+    if iso == 'UK':
+        continue
+    divisionSelectedDict[iso] = divisionDataJson[iso]
+
+# print(divisionSelectedDict)
+
 
 def tryGetRequestsUntilSuccess(url, params=None, **kwargs):
     # counter i
@@ -139,15 +150,20 @@ def getSubdivisionForCoordinate(lat,lon):
 
     # prerequisite
     subdivisionUrl = 'http://api.geonames.org/countrySubdivisionJSON'
+        
     subdivisionParam = {'lat':lat, 'lng':lon, 'username': geousername}
-    
+
     response = tryGetRequestsUntilSuccess(subdivisionUrl, params=subdivisionParam)
     responseJson = response.json()
 
-    stddivisionCode = f"{isoCode}-{responseJson['codes'][0]['code']}"
-    stddivisionName = divisionDataJson[isoCode]['divisions'][stddivisionCode]
-
-    return {'divisionCode': stddivisionCode, 'divisionName': stddivisionName}
+        # print(f"{lat}\n{lon}\n{i}\n{responseJson}")
+        # print()
+    try:   
+        stddivisionCode = f"{isoCode}-{responseJson['codes'][0]['code']}"
+        stddivisionName = divisionSelectedDict[isoCode]['divisions'][stddivisionCode]
+        return {'divisionCode': stddivisionCode, 'divisionName': stddivisionName}
+    except:
+        return "unknown subdivision"
 
 def getStateForIsoCode(isoCode):
     return statesIsoDict[isoCode]['state']
@@ -155,5 +171,15 @@ def getStateForIsoCode(isoCode):
 def getContinentForIsoCode(isoCode):
     return statesIsoDict[isoCode]['continent']
 
-def getRandomStates(continent, exclusion = None):
+def getRandomStatesGivenContinent(continent, answerIso):
+
+    #first, check if the answer in the list, if not then directly return error message
+    if not answerIso in continentsStatesDict[continent]:
+        return "cannot find the state in the continent"
     
+    returnValue = []
+    # return 4 options, so check the number of item
+    if len(continentsStatesDict[continent]) <= 4:
+        # check the right or wrong for each answer
+        for state in continentsStatesDict:
+            # TODO
