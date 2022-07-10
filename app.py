@@ -1,5 +1,6 @@
 import os
 from flask import Flask, redirect, render_template
+from svProjectFunctions import getResultForWeb
 
 app = Flask(__name__)
 
@@ -21,6 +22,8 @@ gglapikey = os.environ.get("Google_API_KEY")
 @app.route("/")
 def index():
     # test panoID in Tibet
-    pano='CAoSLEFGMVFpcE0wR2NoekR0YlhCTVRxTFhZbUlCQXN6Z0NvSjhWcFZRalRLRmlV'
-
-    return render_template("index.html", pano=pano, gglapikey=gglapikey)
+    # pano='CAoSLEFGMVFpcE0wR2NoekR0YlhCTVRxTFhZbUlCQXN6Z0NvSjhWcFZRalRLRmlV'
+    rst = getResultForWeb()
+    print(rst)
+    # rst['state'] = 0
+    return render_template("index.html", rst= rst, gglapikey=gglapikey)

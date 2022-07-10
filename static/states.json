@@ -583,5 +583,10 @@
    "iso": "UY",
    "state": "Uruguay",
    "continent": "South America"
+ },
+ {
+   "iso": "ER",
+   "state": "Eritrea",
+   "continent": "Africa"
  }
 ]

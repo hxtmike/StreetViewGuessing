@@ -1,7 +1,7 @@
 import requests
 import json
 import os
-
+import random
 # login by usernames and ids
 # add geoname username
 if not os.environ.get("Geonames_username"):
@@ -29,35 +29,36 @@ for state in statesDataJson:
 
     # if the key was not exist, create one
     if not state['continent'] in continentsStatesDict:
-        continentsStatesDict[state['continent']] = []
+        continentsStatesDict[state['continent']] = {}
     
     # deal with UK/GB issue, delete item 'UK'
     if state['iso'] == 'UK':
         continue
 
-    continentsStatesDict[state['continent']].append(state['iso'])
+    continentsStatesDict[state['continent']][state['iso']] = state['state']
 
 # print(statesIsoList)    
 # print(statesIsoDict)
 
-for con in continentsStatesDict:
-    print(con)
-    print(continentsStatesDict[con])
+# for con in continentsStatesDict:
+#     print(con)
+#     print(continentsStatesDict[con])
 
 
 # load the subdivision database
 with open('./static/iso-3166-2.json', 'r') as divisionsDataFile:
     divisionsDataStr = divisionsDataFile.read()
-divisionDataJson = json.loads(divisionsDataStr)
+divisionsDataJson = json.loads(divisionsDataStr)
 # the dict which is covering 237 states is too large, cut it
-divisionSelectedDict = {}
+divisionsSelectedDict = {}
 
 for iso in statesIsoList:
     # print(iso)
     # print(divisionDataJson[iso])
     if iso == 'UK':
         continue
-    divisionSelectedDict[iso] = divisionDataJson[iso]
+    # the dict of iso-3166-2 could be simplified
+    divisionsSelectedDict[iso] = divisionsDataJson[iso]['divisions']
 
 # print(divisionSelectedDict)
 
@@ -160,10 +161,10 @@ def getSubdivisionForCoordinate(lat,lon):
         # print()
     try:   
         stddivisionCode = f"{isoCode}-{responseJson['codes'][0]['code']}"
-        stddivisionName = divisionSelectedDict[isoCode]['divisions'][stddivisionCode]
-        return {'divisionCode': stddivisionCode, 'divisionName': stddivisionName}
+        return stddivisionCode
     except:
-        return "unknown subdivision"
+        # "unknown division"
+        return 1
 
 def getStateForIsoCode(isoCode):
     return statesIsoDict[isoCode]['state']
@@ -171,15 +172,102 @@ def getStateForIsoCode(isoCode):
 def getContinentForIsoCode(isoCode):
     return statesIsoDict[isoCode]['continent']
 
-def getRandomStatesGivenContinent(continent, answerIso):
-
+# input is code of answer, but returning value is full name of it
+def getRandomOptionsGivenAnswer(Range, answerCode, multipleDict):
     #first, check if the answer in the list, if not then directly return error message
-    if not answerIso in continentsStatesDict[continent]:
-        return "cannot find the state in the continent"
+    if not answerCode in multipleDict[Range]:
+        # the answer is not in the range 
+        return 1
     
     returnValue = []
     # return 4 options, so check the number of item
-    if len(continentsStatesDict[continent]) <= 4:
+    # print(len(multipleDict[Range]))
+    if len(multipleDict[Range]) < 5:
         # check the right or wrong for each answer
-        for state in continentsStatesDict:
-            # TODO
+        for item in multipleDict[Range]:
+            # print(state)
+            if item == answerCode:
+                returnValue.append([multipleDict[Range][item], True])
+            else:
+                returnValue.append([multipleDict[Range][item], False])
+        # random the organised list
+        # print(returnValue)
+    else:
+        # get 4 values for return 4 options
+        shortList = random.sample(multipleDict[Range].keys(), 4)
+        # print(shortList)
+        if answerCode in shortList:
+            # check the right or wrong for each answer
+            for item in shortList:
+                # print(state)
+                if item == answerCode:
+                    returnValue.append([multipleDict[Range][item], True])
+                else:
+                    returnValue.append([multipleDict[Range][item], False])
+        else:
+            for item in shortList:
+                returnValue.append([multipleDict[Range][item], False])
+            # randomly replace the first element of the list, same as del a random item in the list
+            returnValue[0] = [multipleDict[Range][answerCode], True]
+            
+    random.shuffle(returnValue)
+    return returnValue
+        # 
+        # if answerCode in shortList:
+
+
+def getRandomStatesGivenContinent(continent, stateIso):
+    return getRandomOptionsGivenAnswer(continent, stateIso, continentsStatesDict)
+
+def getRandomdivisionsGivenState(state, divisionIso):
+    return getRandomOptionsGivenAnswer(state, divisionIso, divisionsSelectedDict)
+
+def getResultForWeb():
+    originalRandomCoordinate = getRandomLocationInAvailableStates()
+    originalRandomLat = originalRandomCoordinate['lat']
+    originalRandomLon = originalRandomCoordinate['lon']
+    # print(originalRandomLat)
+    # print(originalRandomLon)
+    # print()
+
+    validGoogleCoordinate = getVaildGoogleStreetViewPano(originalRandomLat, originalRandomLon)
+    panoId = validGoogleCoordinate['pano_id']
+    lat = validGoogleCoordinate['location']['lat']
+    lon = validGoogleCoordinate['location']['lng']
+    # print(panoId)
+    # print(lat)
+    # print(lon)
+    # print()
+
+    stateCode = getIsoCodeForCoordinate(lat, lon)
+    # print(stateCode)
+    # print()
+
+    divisionCode = getSubdivisionForCoordinate(lat, lon)
+    # print(divisionCode)
+    # print()
+
+    hemi = getHemiForCoordinate(lat, lon)
+    # print(hemi)
+    # print()
+
+    continent = getContinentForIsoCode(stateCode)
+    # print(continent)
+    # print()
+
+    stateOptions = getRandomStatesGivenContinent(continent, stateCode)
+    # print(stateOptions)
+    # print()
+
+    # deal with unknown division issue
+    if divisionCode == 1:
+        divisionOptions = 2
+    else:
+        divisionOptions = getRandomdivisionsGivenState(stateCode, divisionCode)
+        # print(divisionOptions)
+        # print()
+
+    return {'panoId':panoId, 'hemi': hemi, 'continent':continent, 'state':stateOptions, 'division': divisionOptions}
+    # for last 2 keys
+    # returning code 1 means "could not find value with given iso code"
+    # returning code 2 means "unknown division"

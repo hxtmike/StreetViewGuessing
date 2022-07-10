@@ -1,4 +1,4 @@
-from svProjectFunctions import getRandomLocationInAvailableStates, getVaildGoogleStreetViewPano, getHemiForCoordinate, getIsoCodeForCoordinate, getStateForIsoCode, getContinentForIsoCode, getSubdivisionForCoordinate
+from svProjectFunctions import getRandomLocationInAvailableStates, getVaildGoogleStreetViewPano, getHemiForCoordinate, getIsoCodeForCoordinate, getStateForIsoCode, getContinentForIsoCode, getSubdivisionForCoordinate, getRandomStatesGivenContinent, getRandomdivisionsGivenState
 
 # check the invalid state code option
 test = getRandomLocationInAvailableStates()
@@ -34,5 +34,11 @@ continent = getContinentForIsoCode(isoCode)
 print(continent)
 
 division = getSubdivisionForCoordinate(rsps['location']['lat'], rsps['location']['lng'])
-print(division['divisionCode'])
-print(division['divisionName'])
+print(division)
+
+print()
+stateOptions = getRandomStatesGivenContinent(continent, isoCode)
+print(stateOptions)
+
+divisionOptions = getRandomdivisionsGivenState(isoCode, division)
+print(divisionOptions)

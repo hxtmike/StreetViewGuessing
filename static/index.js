@@ -8,7 +8,7 @@ function initialize() {
   const panorama = new google.maps.StreetViewPanorama(
     document.getElementById("pano"),
     {
-      pano: panoID,
+      pano: rst['panoId'],
       addressControl: false,
       panControl: false,
       showRoadLabels: false,

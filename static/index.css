@@ -15,8 +15,13 @@ footer {
     font-size: small;
 }
 
+
 main,
 body,
 #row {
     height: calc(100vh - 50px - 45px);
+}
+
+html {
+    font-family: sans-serif;
 }
