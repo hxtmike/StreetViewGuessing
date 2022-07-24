@@ -9,10 +9,10 @@
     <link href="static/index.css" rel="stylesheet" type="text/css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script>
-        var rst = {{ rst | tojson }}
+        const rst = {{ rst | tojson }}
     </script>
     <!-- local js -->
-    <script src="static/index.js"></script>
+    <script src="static/gglmap.js"></script>
 
 {% endblock%}
 
@@ -41,89 +41,123 @@
                 <p class="text-light" style="font-size:150%"><b>Have a guess!</b></p>
             </div>
             <div class="col-lg-6 text-center pt-2">
-                <button type="button" class="btn btn-outline-light">Start</button>
+                <button id="startBtn" type="button" class="btn btn-outline-light">Start</button>
             </div>
         </div>
-
 
         <!-- Q1 hemi -->
-        <div class="row pt-3">
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%">Which Hemisphere?</p>            
+        <div id="q1">
+            <div class="row pt-3">
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%">Which Hemisphere?</p>            
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%"><b id="hintQ1">CHOOSE</b></p>            
+                </div>
             </div>
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%" id="hintQ1"><b>Choose</b></p>            
-            </div>
+
+            <form name="q1radio">
+                <input type="radio" class="btn-check" name="hemi" id="North" autocomplete="off">
+                <label class="btn btn-outline-light" for="North">Northern Hemisphere</label>
+                <input type="radio" class="btn-check" name="hemi" id="South" autocomplete="off">
+                <label class="btn btn-outline-light" for="South">Southern Hemisphere</label>
+            </form>
         </div>
 
-        <div>
-            <input type="radio" class="btn-check" name="hemi" id="north" autocomplete="off">
-            <label class="btn btn-outline-light" for="north">Northern Hemisphere</label>
-            <input type="radio" class="btn-check" name="hemi" id="south" autocomplete="off">
-            <label class="btn btn-outline-light" for="south">Southern Hemisphere</label>
-        </div>
 
         <!-- Q2 Continent -->
-        <div class="row pt-3">
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%">Which Continent?</p>            
+        <div id="q2">
+            <div class="row pt-3">
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%">Which Continent?</p>            
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%" ><b id="hintQ2">CHOOSE</b></p>            
+                </div>
             </div>
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%" id="hintQ2"><b>Choose</b></p>            
-            </div>
-        </div>
 
-        <div>
-            <input type="radio" class="btn-check" name="cont" id="Africa" autocomplete="off">
-            <label class="btn btn-outline-light" for="Africa">Africa</label>
-            <input type="radio" class="btn-check" name="cont" id="Antarctica" autocomplete="off">
-            <label class="btn btn-outline-light" for="Antarctica">Antarctica</label>
-            <input type="radio" class="btn-check" name="cont" id="Asia" autocomplete="off">
-            <label class="btn btn-outline-light" for="Asia">Asia</label>
-            <input type="radio" class="btn-check" name="cont" id="Europe" autocomplete="off">
-            <label class="btn btn-outline-light" for="Europe">Europe</label>
-            <input type="radio" class="btn-check" name="cont" id="North America" autocomplete="off">
-            <label class="btn btn-outline-light" for="North America">North America</label>
-            <input type="radio" class="btn-check" name="cont" id="South America" autocomplete="off">
-            <label class="btn btn-outline-light" for="South America">South America</label>
-            <input type="radio" class="btn-check" name="cont" id="Oceania" autocomplete="off">
-            <label class="btn btn-outline-light" for="Oceania">Oceania</label>
+            <form name="q2radio">
+                <input type="radio" class="btn-check" name="cont" id="Africa" autocomplete="off">
+                <label class="btn btn-outline-light" for="Africa">Africa</label>
+                <input type="radio" class="btn-check" name="cont" id="Antarctica" autocomplete="off">
+                <label class="btn btn-outline-light" for="Antarctica">Antarctica</label>
+                <input type="radio" class="btn-check" name="cont" id="Asia" autocomplete="off">
+                <label class="btn btn-outline-light" for="Asia">Asia</label>
+                <input type="radio" class="btn-check" name="cont" id="Europe" autocomplete="off">
+                <label class="btn btn-outline-light" for="Europe">Europe</label>
+                <input type="radio" class="btn-check" name="cont" id="North America" autocomplete="off">
+                <label class="btn btn-outline-light" for="North America">North America</label>
+                <input type="radio" class="btn-check" name="cont" id="South America" autocomplete="off">
+                <label class="btn btn-outline-light" for="South America">South America</label>
+                <input type="radio" class="btn-check" name="cont" id="Oceania" autocomplete="off">
+                <label class="btn btn-outline-light" for="Oceania">Oceania</label>
+            </form>
         </div>
 
         <!-- Q3 state -->
-        {% if rst['state'] == 1 or rst['state'] == 2 %}
+        <div id="q3">
+            {% if rst['state'] == 1 or rst['state'] == 2 %}
 
-            <div class="col-lg-12 text-center text-light pt-5" style="font-size: 130%">
-                <b>Sorry, We don't have detail information about this location</b>
+                <div class="col-lg-12 text-center text-light pt-5" style="font-size: 130%">
+                    <b>Sorry, We don't have detail information about this location</b>
+                </div>
+
+            {% else %}
+            <div class="row pt-3">
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%">Which State?</p>            
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%"><b id="hintQ3">CHOOSE</b></p>            
+                </div>
             </div>
 
-        {% else %}
-        <div class="row pt-3">
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%">Which state?</p>            
-            </div>
-            <div class="col-lg-4">
-                <p class="text-light" style="font-size: 120%" id="hintQ3"><b>Choose</b></p>            
-            </div>
-        </div>
-
-        <div>
-            <input type="radio" class="btn-check" name="state" id="{{ rst['state'][0][0] }}" autocomplete="off">
-            <label class="btn btn-outline-light" for="{{ rst['state'][0][0] }}">{{ rst['state'][0][0] }}</label>
-            <input type="radio" class="btn-check" name="state" id="{{ rst['state'][1][0] }}" autocomplete="off">
-            <label class="btn btn-outline-light" for="{{ rst['state'][1][0] }}">{{ rst['state'][1][0] }}</label>
-            <input type="radio" class="btn-check" name="state" id="{{ rst['state'][2][0] }}" autocomplete="off">
-            <label class="btn btn-outline-light" for="{{ rst['state'][2][0] }}">{{ rst['state'][2][0] }}</label>
-            <input type="radio" class="btn-check" name="state" id="{{ rst['state'][3][0] }}" autocomplete="off">
-            <label class="btn btn-outline-light" for="{{ rst['state'][3][0] }}">{{ rst['state'][3][0] }}</label>
-        </div>
+            <form name="q3radio">
+                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][0][0] }}" value=0 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['state'][0][0] }}">{{ rst['state'][0][0] }}</label>
+                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][1][0] }}" value=1 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['state'][1][0] }}">{{ rst['state'][1][0] }}</label>
+                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][2][0] }}" value=2 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['state'][2][0] }}">{{ rst['state'][2][0] }}</label>
+                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][3][0] }}" value=3 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['state'][3][0] }}">{{ rst['state'][3][0] }}</label>
+            </form>
         
-            TODO about division
+            {% endif %}
+        </div>
 
+        <!-- Q4 division -->
+        <div id="q4">
+            {% if rst['division'] == 1 or rst['division'] == 2 %}
 
-        {% endif %}
+                <div class="col-lg-12 text-center text-light pt-5" style="font-size: 130%">
+                    <b>Sorry, We don't have detail information about this location</b>
+                </div>
 
-       <p class="text-light">{{ rst }}</p>
+            {% else %}
+            <div class="row pt-3">
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%">Which Division?</p>            
+                </div>
+                <div class="col-lg-4">
+                    <p class="text-light" style="font-size: 120%"><b id="hintQ4">CHOOSE</b></p>            
+                </div>
+            </div>
+
+            <form name="q4radio">
+                <input type="radio" class="btn-check" name="division" id="{{ rst['division'][0][0] }}" value=0 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['division'][0][0] }}">{{ rst['division'][0][0] }}</label>
+                <input type="radio" class="btn-check" name="division" id="{{ rst['division'][1][0] }}" value=1 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['division'][1][0] }}">{{ rst['division'][1][0] }}</label>
+                <input type="radio" class="btn-check" name="division" id="{{ rst['division'][2][0] }}" value=2 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['division'][2][0] }}">{{ rst['division'][2][0] }}</label>
+                <input type="radio" class="btn-check" name="division" id="{{ rst['division'][3][0] }}" value=3 autocomplete="off">
+                <label class="btn btn-outline-light" for="{{ rst['division'][3][0] }}">{{ rst['division'][3][0] }}</label>
+            </form>
+        
+            {% endif %}
+        </div>
+       <!-- <p class="text-light">{{ rst }}</p> -->
 
 
 
@@ -138,6 +172,8 @@
 {% block footjs %}
     <!-- google map js file -->
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gglapikey }}&callback=initialize&v=weekly" defer></script>
+    <!-- scripts for bottons and other behaviours -->
+    <script src="static/btn.js"></script>
     <!-- set latlng -->
 
 
