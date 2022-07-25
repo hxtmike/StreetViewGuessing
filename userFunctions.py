@@ -6,6 +6,10 @@ def error(message):
     print(message)
     return render_template('error.html', message = message)
 
+def msg(message):
+    print(message)
+    return render_template('msg.html', message = message)
+
 def login_required(f):
     """
     Decorate routes to require login.

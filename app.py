@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 from svProjectFunctions import getResultForWeb
-from userFunctions import error
+from userFunctions import error, login_required, msg
 
 app = Flask(__name__)
 
@@ -134,6 +134,54 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+@app.route("/changepasswords", methods=["GET", "POST"])
+def changepasswords():
+    """change passwords"""
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("oldpassword"):
+            return error("Please enter the current password")
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE id = ?", session['user_id'])
+
+        # Ensure password is correct
+        if not check_password_hash(rows[0]["hash"], request.form.get("oldpassword")):
+            return error("Wrong Password")
+
+        # Ensure new password was submitted
+        if not request.form.get("newpassword"):
+            return error("must provide new password")
+
+        # Ensure new password was submitted
+        if not request.form.get("confirmation"):
+            return error("please re-enter new password")
+
+        # Ensure password check
+        if not request.form.get("newpassword") == request.form.get("confirmation"):
+            return error("passwords do not match")
+
+        new_password_hash = generate_password_hash(request.form.get("newpassword"))
+
+        db.execute("UPDATE users SET hash = ? WHERE id = ?", new_password_hash, session["user_id"])
+
+        return msg("Change the Passwords Successfully")
+
+    # # User reached route via GET (as by clicking a link or via redirect)
+    return render_template("changepasswords.html")
 
 @app.route('/stateslist')
 def stateslist():

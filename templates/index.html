@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Street View Guessing - index
+    Street View Guessing
 {% endblock %}
 
 {% block head %}
 
-    <link href="static/index.css" rel="stylesheet" type="text/css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script>
         const rst = {{ rst | tojson }}
