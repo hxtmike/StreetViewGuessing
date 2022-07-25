@@ -51,6 +51,54 @@ def index():
     # rst['state'] = 0
     return render_template("index.html", rst= rst, gglapikey=gglapikey)
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return error("must provide username")
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+        # Ensure username does not exist
+        if len(rows) != 0:
+            return error("the username already exists")
+
+        # Ensure password was submitted
+        if not request.form.get("password"):
+            return error("must provide password")
+
+        # Ensure confirmation was submitted
+        if not request.form.get("confirmation"):
+            return error("must confirm password")
+
+        # check the password and the confirmation
+        if not request.form.get("password") == request.form.get("confirmation"):
+            return error("password don't match")
+
+        password_hash = generate_password_hash(request.form.get("password"))
+        username = request.form.get("username")
+
+        # print(f"INSERT INTO users (username, hash) VALUES ('{username}', '{password_hash}');")
+        id_inserted = db.execute("INSERT INTO users (username, hash) VALUES (? ,?);", username, password_hash)
+
+        session["user_id"] = id_inserted
+
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("register.html")
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""

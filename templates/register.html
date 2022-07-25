@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Street View Guessing - Register
+{% endblock %}
+
+{% block head %}
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+{% endblock%}
+
+{% block main %}
+
+<div class="row bg-dark text-white text-center">
+    <p style="font-size:150%">
+        <b>Please Register an Account</b>
+        <br>
+    </p>
+</div>
+
+<div class="row bg-dark text-center">
+    <form action="/register" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" id="confirmation" name="confirmation" placeholder="Password Confirmation" type="password">
+        </div>
+        <button class="btn btn-outline-light" type="submit">Register</button>
+    </form>
+</div>
+
+{% endblock %}
