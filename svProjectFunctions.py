@@ -222,8 +222,11 @@ def getRandomStatesGivenContinent(continent, stateIso):
 def getRandomdivisionsGivenState(state, divisionIso):
     return getRandomOptionsGivenAnswer(state, divisionIso, divisionsSelectedDict)
 
-def getResultForWeb():
-    originalRandomCoordinate = getRandomLocationInAvailableStates()
+def getResultForWeb(state = 0):
+    if state == 0:
+        originalRandomCoordinate = getRandomLocationInAvailableStates()
+    else:
+        originalRandomCoordinate = getRandomLocationInAvailableStates(isoCode = state)
     originalRandomLat = originalRandomCoordinate['lat']
     originalRandomLon = originalRandomCoordinate['lon']
     # print(originalRandomLat)

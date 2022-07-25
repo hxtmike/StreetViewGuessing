@@ -4,11 +4,16 @@ const q2 = document.getElementById("q2");
 const q3 = document.getElementById("q3");
 const q4 = document.getElementById("q4");
 
+
+const tryagain = document.getElementById("tryagain");
+const tryagainBtn = document.getElementById("tryagainBtn");
+
 // hide all questions
 q1.style.display = "none";
 q2.style.display = "none";
 q3.style.display = "none";
 q4.style.display = "none";
+tryagain.style.display = "none";
 
 // start the first question
 const startBtn = document.getElementById("startBtn");
@@ -73,17 +78,37 @@ for (let i = 0; i < 4; i++) {
     }
 }
 
-const q4radio = document.forms['q4radio'].elements['division'];
-const q4hint = document.getElementById('hintQ4')
+if (rst['division'] == 1 || rst['division'] == 2) {
 
-for (let i = 0; i < 4; i++) {
-    q4radio[i].onclick = function () {
-        if (rst['division'][this.value][1]) {
-            q4hint.style.color = 'green';
-            q4hint.innerHTML = 'CORRECT'
-        } else {
-            q4hint.style.color = "red";
-            q4hint.innerHTML = "INCORRECT";
-        }
+    const q4next = document.getElementById('q4next');
+
+    q4next.onclick = function () {
+        tryagain.style.display = "block";
     }
+
+} else {
+
+    const q4radio = document.forms['q4radio'].elements['division'];
+    const q4hint = document.getElementById('hintQ4');
+
+    for (let i = 0; i < 4; i++) {
+        q4radio[i].onclick = function () {
+            if (rst['division'][this.value][1]) {
+                q4hint.style.color = 'green';
+                q4hint.innerHTML = 'CORRECT'
+
+                tryagain.style.display = 'block';
+            } else {
+                q4hint.style.color = "red";
+                q4hint.innerHTML = "INCORRECT";
+            }
+        }
+    }   
+
 }
+
+
+tryagainBtn.onclick = function () {
+    window.location.href = "/";
+}
+

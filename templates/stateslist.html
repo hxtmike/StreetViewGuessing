@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Street View Guessing - List of States
+{% endblock %}
+
+{% block head %}
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script>
+        const stateslist = {{ stateslist | tojson }}
+    </script>
+
+{% endblock%}
+
+{% block main %}
+
+<div class="row bg-dark text-white text-center">
+    <p style="font-size:150%">
+        <b>All Available States</b>
+    </p>
+
+    <p>NOTE: We would try our best to find places in below states, but there are still some inaccurate data</p>
+    <table>
+        <thead>
+            <tr style="font-size:120%">
+                <td><b>ISO Country Codes</b></td>
+                <td><b>State</b></td>
+                <td><b>Get a Random Location in This State</b></td>
+            </tr>
+        </thead>
+        <tbody id="maintable">
+        </tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>    
+
+{% endblock %}
+
+
+{% block footjs %}
+    <!-- google map js file -->
+    <script src="static/stateslist.js"></script>
+    <!-- set latlng -->
+
+{% endblock %}
