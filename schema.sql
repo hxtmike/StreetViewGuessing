@@ -4,3 +4,4 @@ CREATE TABLE IF NOT EXISTS 'users'
     'username' TEXT NOT NULL, 
     'hash' TEXT NOT NULL
 );
+
