@@ -129,7 +129,7 @@ def getVaildGoogleStreetViewPano(lat, lon):
             # print(f"the radius is increased to {gglSvMetadataParam['radius']}")
 
 def getHemiForCoordinate(lat,lon):
-    if int(lat) >= 0:
+    if float(lat) >= 0:
         return "North"
     else:
         return "South"
@@ -270,7 +270,7 @@ def getResultForWeb(state = 0):
         # print(divisionOptions)
         # print()
 
-    return {'panoId':panoId, 'hemi': hemi, 'continent':continent, 'state':stateOptions, 'division': divisionOptions}
+    return {'panoId':panoId, 'lat':lat, 'lon':lon, 'hemi': hemi, 'continent':continent, 'state':stateOptions, 'division': divisionOptions}
     # for last 2 keys
     # returning code 1 means "could not find value with given iso code"
     # returning code 2 means "unknown division"
