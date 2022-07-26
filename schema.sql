@@ -1,13 +1,25 @@
--- CREATE TABLE IF NOT EXISTS 'users'
--- (
---     'id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
---     'username' TEXT NOT NULL, 
---     'hash' TEXT NOT NULL
--- );
+CREATE TABLE IF NOT EXISTS 'users'
+(
+    'id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    'username' TEXT NOT NULL, 
+    'hash' TEXT NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS 'history'
 (
     'history_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    'user_id' INTEGER NOT NULL,
+    'timestamp' TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    'lat' REAL NOT NULL,
+    'lon' REAL NOT NULL,
+    'state' TEXT NOT NULL,
+    'pano' TEXT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+)
+
+CREATE TABLE IF NOT EXISTS 'favourite'
+(
+    'favourite_id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     'user_id' INTEGER NOT NULL,
     'timestamp' TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     'lat' REAL NOT NULL,

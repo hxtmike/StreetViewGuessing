@@ -8,7 +8,7 @@
 {% block head %}
     <link href="static/layoutlong.css" rel="stylesheet" type="text/css">
     <script>
-        const history = {{ history | tojson }}
+        const favourites = {{ favourites | tojson }}
     </script>
 
 {% endblock%}
@@ -17,27 +17,23 @@
 
 <div class="row bg-dark text-white text-center">
     <p style="font-size:150%">
-        <b>History</b>
+        <b>Favourites</b>
     </p>
 
     <table>
         <thead>
             <tr style="font-size:120%">
-                <td><b>Timestamp</b></td>
                 <td><b>Latitude</b></td>
                 <td><b>Longitude</b></td>
                 <td><b>State</b></td>
                 <td><b>Google Street View Pano ID</b></td>
                 <td><b>Link to Google Map</b></td>
-                <td><b>Add to My Favourites</b></td>
             </tr>
         </thead>
         <tbody id="maintable">
         </tbody>
         <tfoot>
             <tr>
-                <td></td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -53,7 +49,7 @@
 
 {% block footjs %}
     <!-- google map js file -->
-    <script src="static/history.js"></script>
+    <script src="static/favourites.js"></script>
     <!-- set latlng -->
 
 {% endblock %}

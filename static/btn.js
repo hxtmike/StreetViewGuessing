@@ -121,7 +121,14 @@ if (rst['division'] == 1 || rst['division'] == 2) {
 }
 
 
+
 tryagainBtn.onclick = function () {
     window.location.href = "/";
 }
 
+
+const addToMyFavourites = document.getElementById("addToMyFavourites")
+
+addToMyFavourites.onclick = function () {
+    window.location.href = '/favourites?lat=' + rst["lat"] + '&lon=' + rst["lon"] + '&state=' + rst["stateLog"] + '&pano=' + rst["panoId"];
+}

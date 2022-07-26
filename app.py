@@ -46,19 +46,22 @@ def index():
     else:
         rst = getResultForWeb(state = statearg)
 
+    # to get simple state information of the location istead of options of the index page
+    for option in rst['state']:
+        if option[1]:
+            stateLog = option[0]
+    rst['stateLog'] = stateLog
+        
     # add log in history in database if user logged
+    
     if not session.get("user_id") is None:
-        # to get simple state information of the location istead of options of the index page
-        for option in rst['state']:
-            if option[1]:
-                stateLog = option[0]
         db.execute("INSERT INTO history (user_id, lat, lon, state, pano) VALUES (?,?,?,?,?);",session["user_id"], round(float(rst['lat']),6), round(float(rst['lon']),6), stateLog, rst['panoId'] )
     # else:
         # print('unlogged')
     # rst['state'] = 0
 
     # test a location in antarctica
-    rst = {'panoId': '9yxJ1_HXapBWpxbb24x5_Q', 'lat': -77.88874642391032, 'lon': 160.5823942629601, 'hemi': 'South', 'continent': 'Antarctica', 'state': [['Antarctica', True]], 'division': 2}
+    # rst = {'panoId': '9yxJ1_HXapBWpxbb24x5_Q', 'lat': -77.88874642391032, 'lon': 160.5823942629601, 'hemi': 'South', 'continent': 'Antarctica', 'state': [['Antarctica', True]], 'division': 2}
     print(rst)
 
     return render_template("index.html", rst= rst, gglapikey=gglapikey)
@@ -146,6 +149,7 @@ def login():
     else:
         return render_template("login.html")
 
+@login_required
 @app.route("/logout")
 def logout():
     """Log user out"""
@@ -156,6 +160,7 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
+@login_required
 @app.route("/changepasswords", methods=["GET", "POST"])
 def changepasswords():
     """change passwords"""
@@ -208,6 +213,7 @@ def stateslist():
 # def errorPage():
 #     return error('test msg')
 
+@login_required
 @app.route('/history')
 def history():
 
@@ -218,3 +224,23 @@ def history():
 
     return render_template("history.html", history = history)
 
+@login_required
+@app.route('/favourites')
+def favourites():
+    userId = session["user_id"]
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    state = request.args.get('state')
+    pano = request.args.get('pano')
+    #print(args==None)
+    # print(userId)
+    # print(lat)
+    # print(lon)
+    # print(state)
+    # print(pano)
+    if state != None:
+        db.execute("INSERT INTO favourite (user_id, lat, lon, state, pano) VALUES (?,?,?,?,?);",userId, round(float(lat),6), round(float(lon),6), state, pano)
+    
+    favourite = db.execute("SELECT lat, lon, state, pano FROM favourite WHERE user_id = ?", userId)
+    
+    return render_template('favourites.html', favourites=favourite)
