@@ -225,22 +225,31 @@ def history():
     return render_template("history.html", history = history)
 
 @login_required
-@app.route('/favourites')
+@app.route('/favourites', methods=["GET", "POST"])
 def favourites():
     userId = session["user_id"]
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
-    state = request.args.get('state')
-    pano = request.args.get('pano')
-    #print(args==None)
-    # print(userId)
-    # print(lat)
-    # print(lon)
-    # print(state)
-    # print(pano)
-    if state != None:
-        db.execute("INSERT INTO favourite (user_id, lat, lon, state, pano) VALUES (?,?,?,?,?);",userId, round(float(lat),6), round(float(lon),6), state, pano)
     
-    favourite = db.execute("SELECT lat, lon, state, pano FROM favourite WHERE user_id = ?", userId)
+    # handle the delete request, which would be a post request
+    if request.method == "POST": 
+
+        favouriteId = request.form.get('favouriteId')
+        print(favouriteId)
+        db.execute("DELETE FROM favourite WHERE favourite_id = ?",favouriteId)
+
+    else:
+        lat = request.args.get('lat')
+        lon = request.args.get('lon')
+        state = request.args.get('state')
+        pano = request.args.get('pano')
+        #print(args==None)
+        # print(userId)
+        # print(lat)
+        # print(lon)
+        # print(state)
+        # print(pano)
+        if state != None:
+            db.execute("INSERT INTO favourite (user_id, lat, lon, state, pano) VALUES (?,?,?,?,?);",userId, round(float(lat),6), round(float(lon),6), state, pano)
+    
+    favourite = db.execute("SELECT lat, lon, state, pano,favourite_id FROM favourite WHERE user_id = ?", userId)
     
     return render_template('favourites.html', favourites=favourite)
