@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Street View Guessing - List of Available States
+    Street View Guessing - History
 {% endblock %}
+
 
 {% block head %}
     <link href="static/layoutlong.css" rel="stylesheet" type="text/css">
     <script>
-        const stateslist = {{ stateslist | tojson }}
+        const history = {{ history | tojson }}
     </script>
 
 {% endblock%}
@@ -16,22 +17,27 @@
 
 <div class="row bg-dark text-white text-center">
     <p style="font-size:150%">
-        <b>All Available States</b>
+        <b>History</b>
     </p>
 
-    <p>NOTE: We would try our best to find places in below states, but there are still some inaccurate data</p>
     <table>
         <thead>
             <tr style="font-size:120%">
-                <td><b>ISO Country Codes</b></td>
+                <td><b>Timestamp</b></td>
+                <td><b>Latitude</b></td>
+                <td><b>Longitude</b></td>
                 <td><b>State</b></td>
-                <td><b>Get a Random Location in This State</b></td>
+                <td><b>Google Street View Pano ID</b></td>
+                <td><b>Link to Google Map</b></td>
             </tr>
         </thead>
         <tbody id="maintable">
         </tbody>
         <tfoot>
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -45,7 +51,7 @@
 
 {% block footjs %}
     <!-- google map js file -->
-    <script src="static/stateslist.js"></script>
+    <script src="static/history.js"></script>
     <!-- set latlng -->
 
 {% endblock %}

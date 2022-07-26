@@ -27,6 +27,7 @@ startBtn.onclick = function () {
 const q1radio = document.forms["q1radio"].elements['hemi'];
 const q1hint = document.getElementById('hintQ1')
 
+
 for (let i = 0; i < 2; i++) {
     q1radio[i].onclick = function () {
         if (rst['hemi'] == this.id) {
@@ -62,18 +63,30 @@ for (let i = 0; i < 7; i++) {
 }
 
 const q3radio = document.forms['q3radio'].elements['state'];
-const q3hint = document.getElementById('hintQ3')
+const q3hint = document.getElementById('hintQ3');
 
-for (let i = 0; i < 4; i++) {
-    q3radio[i].onclick = function () {
-        if (rst['state'][this.value][1]) {
-            q3hint.style.color = 'green';
-            q3hint.innerHTML = 'CORRECT'
+if (rst['state'][0][0] == 'Antarctica') {
+    
+    q3radio.onclick = function () {
+        q3hint.style.color = 'green';
+        q3hint.innerHTML = 'CORRECT';
 
-            q4.style.display = 'block';
-        } else {
-            q3hint.style.color = "red";
-            q3hint.innerHTML = "INCORRECT";
+        q4.style.display = 'block';
+    }    
+
+} else {
+
+    for (let i = 0; i < 4; i++) {
+        q3radio[i].onclick = function () {
+            if (rst['state'][this.value][1]) {
+                q3hint.style.color = 'green';
+                q3hint.innerHTML = 'CORRECT';
+
+                q4.style.display = 'block';
+            } else {
+                q3hint.style.color = "red";
+                q3hint.innerHTML = "INCORRECT";
+            }
         }
     }
 }

@@ -6,6 +6,7 @@
 
 {% block head %}
 
+    <link href="static/layout.css" rel="stylesheet" type="text/css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script>
         const rst = {{ rst | tojson }}
@@ -105,16 +106,24 @@
                 </div>
             </div>
 
-            <form name="q3radio">
-                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][0][0] }}" value=0 autocomplete="off">
-                <label class="btn btn-outline-light" for="{{ rst['state'][0][0] }}">{{ rst['state'][0][0] }}</label>
-                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][1][0] }}" value=1 autocomplete="off">
-                <label class="btn btn-outline-light" for="{{ rst['state'][1][0] }}">{{ rst['state'][1][0] }}</label>
-                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][2][0] }}" value=2 autocomplete="off">
-                <label class="btn btn-outline-light" for="{{ rst['state'][2][0] }}">{{ rst['state'][2][0] }}</label>
-                <input type="radio" class="btn-check" name="state" id="{{ rst['state'][3][0] }}" value=3 autocomplete="off">
-                <label class="btn btn-outline-light" for="{{ rst['state'][3][0] }}">{{ rst['state'][3][0] }}</label>
-            </form>
+
+                {% if rst['state'][0][0] == 'Antarctica' %}
+                    <form name="q3radio">
+                        <input type="radio" class="btn-check" name="state" id='AntarcticaState' value=0 autocomplete="off">
+                        <label class="btn btn-outline-light" for="AntarcticaState">{{ rst['state'][0][0] }}</label>
+                    </form>
+                {% else %}
+                    <form name="q3radio">
+                        <input type="radio" class="btn-check" name="state" id="{{ rst['state'][0][0] }}" value=0 autocomplete="off">
+                        <label class="btn btn-outline-light" for="{{ rst['state'][0][0] }}">{{ rst['state'][0][0] }}</label>
+                        <input type="radio" class="btn-check" name="state" id="{{ rst['state'][1][0] }}" value=1 autocomplete="off">
+                        <label class="btn btn-outline-light" for="{{ rst['state'][1][0] }}">{{ rst['state'][1][0] }}</label>
+                        <input type="radio" class="btn-check" name="state" id="{{ rst['state'][2][0] }}" value=2 autocomplete="off">
+                        <label class="btn btn-outline-light" for="{{ rst['state'][2][0] }}">{{ rst['state'][2][0] }}</label>
+                        <input type="radio" class="btn-check" name="state" id="{{ rst['state'][3][0] }}" value=3 autocomplete="off">
+                        <label class="btn btn-outline-light" for="{{ rst['state'][3][0] }}">{{ rst['state'][3][0] }}</label>
+                    </form>
+                {% endif %}
         
             {% endif %}
         </div>

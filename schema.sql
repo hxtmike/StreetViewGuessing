@@ -1,9 +1,9 @@
-CREATE TABLE IF NOT EXISTS 'users'
-(
-    'id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    'username' TEXT NOT NULL, 
-    'hash' TEXT NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS 'users'
+-- (
+--     'id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+--     'username' TEXT NOT NULL, 
+--     'hash' TEXT NOT NULL
+-- );
 
 CREATE TABLE IF NOT EXISTS 'history'
 (
@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS 'history'
     'state' TEXT NOT NULL,
     'pano' TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
-)
+);

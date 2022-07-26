@@ -41,14 +41,26 @@ def index():
     # test panoID in Tibet
     # pano='CAoSLEFGMVFpcE0wR2NoekR0YlhCTVRxTFhZbUlCQXN6Z0NvSjhWcFZRalRLRmlV'
 
-
     if statearg == None:
         rst = getResultForWeb()
     else:
         rst = getResultForWeb(state = statearg)
 
-    print(rst)
+    # add log in history in database if user logged
+    if not session.get("user_id") is None:
+        # to get simple state information of the location istead of options of the index page
+        for option in rst['state']:
+            if option[1]:
+                stateLog = option[0]
+        db.execute("INSERT INTO history (user_id, lat, lon, state, pano) VALUES (?,?,?,?,?);",session["user_id"], round(float(rst['lat']),6), round(float(rst['lon']),6), stateLog, rst['panoId'] )
+    # else:
+        # print('unlogged')
     # rst['state'] = 0
+
+    # test a location in antarctica
+    rst = {'panoId': '9yxJ1_HXapBWpxbb24x5_Q', 'lat': -77.88874642391032, 'lon': 160.5823942629601, 'hemi': 'South', 'continent': 'Antarctica', 'state': [['Antarctica', True]], 'division': 2}
+    print(rst)
+
     return render_template("index.html", rst= rst, gglapikey=gglapikey)
 
 @app.route("/register", methods=["GET", "POST"])
@@ -189,9 +201,20 @@ def stateslist():
     with open('./static/states.json', 'r') as statesDataFile:
         statesDataStr = statesDataFile.read()
     stateslist = json.loads(statesDataStr)
+
     return render_template("stateslist.html", stateslist = stateslist)
 
 # @app.route('/error')
 # def errorPage():
 #     return error('test msg')
+
+@app.route('/history')
+def history():
+
+    history = db.execute("SELECT timestamp, lat, lon, state, pano FROM history WHERE user_id = ?", session["user_id"])
+
+    print(history)
+    # history = "test history msg"
+
+    return render_template("history.html", history = history)
 
