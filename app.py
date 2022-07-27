@@ -253,3 +253,8 @@ def favourites():
     favourite = db.execute("SELECT lat, lon, state, pano,favourite_id FROM favourite WHERE user_id = ?", userId)
     
     return render_template('favourites.html', favourites=favourite)
+
+if __name__ == '__main__':
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    app.run()
