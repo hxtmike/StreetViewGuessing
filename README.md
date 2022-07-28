@@ -14,7 +14,7 @@ The right half is some questions with options, which are about where the locatio
 
 Visitors can also get a random view in a certain state. The page list all available states that google street view support. It works well in most countries. However, in some tiny/Streetview lacking areas (Antarctica etc.), the resulting location may come from other places. This is a bug embedded in APIs.
 
-The user account feature is supported in the project, which means we have `register`, `login`, `logout`, and `change password pages. If the visitors are logged in, their viewing history would be recorded and they could also add certain locations to the My Favourites section. `Add to My Favourites` buttons could be found in the history page and the index (main) page. The data in the My Favourites pages could be edited by visitors themselves.
+The user account feature is supported in the project, which means we have `register`, `login`, `logout`, and `change password` pages. If the visitors are logged in, their viewing history would be recorded and they could also add certain locations to the My Favourites section. `Add to My Favourites` buttons could be found in the history page and the index (main) page. The data in the My Favourites pages could be edited by visitors themselves.
 
 #### Files of this project and their function
 
